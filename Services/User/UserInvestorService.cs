@@ -36,7 +36,10 @@ namespace investiment.manager.api.Services.User
 
         public async Task BuyInvestment(InvestmentModel investment, UserInvestor user)
         {
-
+            // Validar se investimento existe
+            // Caso exista verificar quais o usuário já possui
+            // Caso usuário não possua o investimento indicado adicionar
+            // Caso não retornar erro
         }
     }
 }
