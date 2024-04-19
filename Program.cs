@@ -3,8 +3,8 @@ using investiment.manager.api.Interfaces.Investment;
 using investiment.manager.api.Repositories;
 using investiment.manager.api.Repositories.Investment;
 using investiment.manager.api.Services.Investment;
+using investiment.manager.api.Services.User;
 using investiment.manager.api.Utils;
-using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +18,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped(typeof(IRepositoryBase<>), typeof(RepositoryBase<>));
 builder.Services.AddScoped<IInvestmentRepository, InvestmentRepository>();
 builder.Services.AddScoped<InvestmentService>();
+builder.Services.AddScoped<UserInvestorService>();
 
 builder.Services.Configure<DbContext>(
     builder.Configuration.GetSection("DbContext"));
