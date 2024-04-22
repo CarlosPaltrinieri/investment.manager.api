@@ -1,9 +1,8 @@
-# Investment Manager - Teste técnico
+# Investment Manager 
 
 ## Overview
 
 Projeto elaborado para gerenciamento de investimentos, assim como criação/consulta de usuário e compra e venda de ações em sua carteira.
-Será avaliado como teste.
 
 ## Features
 
