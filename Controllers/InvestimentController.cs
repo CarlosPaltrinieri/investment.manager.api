@@ -1,8 +1,8 @@
-﻿using investiment.manager.api.Interfaces;
-using investiment.manager.api.Models.Investment;
+﻿using investiment.manager.api.Models.Investment;
 using investiment.manager.api.Services.Investment;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Net;
 
 namespace investiment.manager.api.Controllers
 {
@@ -13,6 +13,11 @@ namespace investiment.manager.api.Controllers
         private readonly ILogger<InvestimentController> _logger = logger;
         private readonly InvestmentService _service = service;
 
+        /// <summary>
+        /// Consulta investimento pelo Id e/ou pelo Tipo de investimento.
+        /// </summary>
+        /// <param name="idInvestment"></param>
+        /// <param name="typeInvestment"></param>
         [HttpGet]
         public async Task<IActionResult> GetInvestment([FromHeader] string? idInvestment = null, string? typeInvestment = null)
         {
@@ -21,7 +26,11 @@ namespace investiment.manager.api.Controllers
                 var investment = new InvestmentModel();
                 var result = await _service.GetInvestmentAsync(idInvestment, typeInvestment);
 
-                return Ok(result);
+                if (result != null && result?.StatusCode == (int)HttpStatusCode.OK)
+                    return Ok(result);
+                else
+                    return BadRequest(result);
+
             }
             catch (Exception ex)
             {
@@ -30,16 +39,34 @@ namespace investiment.manager.api.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Criar investimento para compra.
+        /// </summary>
+        /// /// <remarks>
+        /// Sample request:
+        ///
+        ///     {
+        ///     "Type": "CDB",
+        ///     "Value": {
+        ///         "Name": "NomeInvestimento",
+        ///         "Description": "Texto de descricao",
+        ///         "ExpiryDate": "DateTime de tempo de expiracao",
+        ///         "Price": 0.5
+        ///         }
+        ///     }
+        ///
+        /// </remarks>
         [HttpPost]
         public async Task<IActionResult> CreateInvestment([FromBody] InvestmentModel investment)
         {
             try
             {
-                
-                await _service.CreateInvestiment(investment);
+                var result = await _service.CreateInvestiment(investment);
 
-                return Ok();
+                if (result != null && result?.StatusCode == (int)HttpStatusCode.OK)
+                    return Ok(result);
+                else
+                    return BadRequest(result);
             }
             catch (Exception ex)
             {
@@ -48,15 +75,36 @@ namespace investiment.manager.api.Controllers
             }
         }
 
+        /// <summary>
+        /// Atualiza tipo de investimento.
+        /// </summary>
+        /// /// <remarks>
+        /// Sample request:
+        ///
+        ///     {
+        ///     "Id": "IdInvestimento",
+        ///     "Type": "CDB",
+        ///     "Value": {
+        ///         "Name": "NomeInvestimento",
+        ///         "Description": "Texto de descricao",
+        ///         "ExpiryDate": "DateTime de tempo de expiracao",
+        ///         "Price": 0.5
+        ///         }
+        ///     }
+        ///
+        /// </remarks>
+
         [HttpPut]
         public async Task<IActionResult> UpdateInvestment([FromBody] InvestmentModel investment)
         {
             try
             {
+                var result = await _service.UpdateInvestmentAsync(investment);
 
-                await _service.UpdateInvestmentAsync(investment);
-
-                return Ok();
+                if (result != null && result?.StatusCode == (int)HttpStatusCode.OK)
+                    return Ok(result);
+                else
+                    return BadRequest(result);
             }
             catch (Exception ex)
             {
